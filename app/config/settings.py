@@ -6,8 +6,9 @@ class Settings(BaseSettings):
     database_name: str
     email_user: str
     email_pass: str
-    smtp_host: str = "smtp.zoho.in"
-    smtp_port: int = 587
+    smtp_host: str = "p1432.use1.mysecurecloudhost.com"
+    smtp_port: int = 465
+    smtp_use_ssl: bool = True
     frontend_url: str = "http://localhost:3000"
     jwt_secret: str = "default_secret_change_in_production"
 

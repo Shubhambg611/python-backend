@@ -42,11 +42,18 @@ async def send_otp_email_with_retry(email: str, otp: str, retries: int = 3, dela
             html_part = MIMEText(html_body, 'html')
             message.attach(html_part)
 
-            # Connect to SMTP server
-            with smtplib.SMTP(settings.smtp_host, settings.smtp_port) as server:
-                server.starttls()
-                server.login(settings.email_user, settings.email_pass)
-                server.send_message(message)
+            # Connect to SMTP server with SSL
+            if settings.smtp_use_ssl and settings.smtp_port == 465:
+                # Use SMTP_SSL for port 465
+                with smtplib.SMTP_SSL(settings.smtp_host, settings.smtp_port) as server:
+                    server.login(settings.email_user, settings.email_pass)
+                    server.send_message(message)
+            else:
+                # Use SMTP with STARTTLS for port 587
+                with smtplib.SMTP(settings.smtp_host, settings.smtp_port) as server:
+                    server.starttls()
+                    server.login(settings.email_user, settings.email_pass)
+                    server.send_message(message)
 
             logger.info(f"OTP email sent successfully to {email} on attempt {attempt}")
             return  # Success, exit the function
