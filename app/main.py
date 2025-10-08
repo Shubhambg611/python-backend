@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes.register import registration_router, verify_email_router, check_user_router
 from app.routes.forgot_password import send_otp_router, verify_otp_router, reset_password_router
 from app.routes.access import login_router, logout_router
+from app.routes.ai_assistant import assistants_router
 from app.config.database import Database
 import logging
 
@@ -41,6 +42,9 @@ app.include_router(reset_password_router, prefix="/api/forgot_password", tags=["
 # Access routers
 app.include_router(login_router, prefix="/api/access", tags=["Access"])
 app.include_router(logout_router, prefix="/api/access", tags=["Access"])
+
+# AI Assistant routers
+app.include_router(assistants_router, prefix="/api/ai-assistants", tags=["AI Assistants"])
 
 @app.on_event("startup")
 async def startup_event():
